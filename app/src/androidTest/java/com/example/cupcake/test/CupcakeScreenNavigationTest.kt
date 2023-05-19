@@ -10,7 +10,6 @@ import androidx.navigation.compose.ComposeNavigator
 import androidx.navigation.testing.TestNavHostController
 import com.example.cupcake.CupcakeApp
 import com.example.cupcake.CupcakeScreen
-import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -32,7 +31,7 @@ class CupcakeScreenNavigationTest {
             navController = TestNavHostController(LocalContext.current).apply {
                 navigatorProvider.addNavigator(ComposeNavigator())
             }
-            CupcakeApp()
+            CupcakeApp(navController = navController)
         }
     }
 
@@ -40,7 +39,7 @@ class CupcakeScreenNavigationTest {
     fun cupcakeNavHost_verifyStartDestination() {
 
         navController.assertCurrentRouteName(CupcakeScreen.Start.name)
-        assertEquals(CupcakeScreen.Start.name, navController.currentBackStackEntry?.destination?.route)
+//        assertEquals(CupcakeScreen.Start.name, navController.currentBackStackEntry?.destination?.route)
     }
 
     @Test
@@ -51,7 +50,7 @@ class CupcakeScreenNavigationTest {
 
     @Test
     fun cupcakeNavHost_clickOneCupcake_navigatesToSelectFlavorScreen() {
-        composeTestRule.onNodeWithStringId(com.example.cupcake.R.string.new_cupcake_order)
+        composeTestRule.onNodeWithStringId(com.example.cupcake.R.string.one_cupcake)
             .performClick()
         navController.assertCurrentRouteName(CupcakeScreen.Flavor.name)
     }
@@ -123,7 +122,7 @@ class CupcakeScreenNavigationTest {
 
     private fun getFormattedDate(): String {
         val calendar = Calendar.getInstance()
-        calendar.add(java.util.Calendar.DATE, 1)
+        calendar.add(Calendar.DATE, 1)
         val formatter = SimpleDateFormat("E MMM d", Locale.getDefault())
         return formatter.format(calendar.time)
     }
